@@ -1,21 +1,32 @@
 import './App.css';
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import 'font-awesome/css/font-awesome.min.css';
 import FormDisplay from './FormDisplay.js';
+import DisplayUserTitle from './DisplayUserTitle';
 
 
-export default function TaskDisplay({ startingTodos, username, title}) {
+export default function TaskDisplay({ startingTodos, usernameRef, titleRef}) {
   const [todos, setTodos] = useState(startingTodos);
   const [task, setTask] = useState('');
+
+  const [recentTask, setRecentTask] = useState(null);
+
+ 
 
   const addTodo = () => {
     let newTodo = { id: todos.length + 1, title: task, completed: false };
     setTodos((todos) => [...todos, newTodo]);
+ 
   };
 
   const handleTask = (value) => {
     setTask(value);
+    setRecentTask(value);
   };
+
+  // useEffect(() => {
+  //   console.log("yo");
+  //    }, [recentTask]);
 
   const handleCompletedChange = (id, isChecked) => {
     setTodos((startingTodos) =>
@@ -34,11 +45,12 @@ export default function TaskDisplay({ startingTodos, username, title}) {
   };
 
   return (
+    
     <div>
       <form>
       <div className="labels row">
       <div id="toDoList">
-      <li> {username} <br /> To Do List <br /> {title}</li></div>
+      <li> <DisplayUserTitle /></li></div>
       <div id="newToDo"><label >
           New To Do <br />
           <input type="text" id="todo" onChange={(e) => handleTask(e.target.value)} />
@@ -49,6 +61,7 @@ export default function TaskDisplay({ startingTodos, username, title}) {
         </div>
         </div>
       </form>
+      
       {todos.map((t) => (
         <div className="toDos" key={t.id}> {t.id}.   {t.title}
 
@@ -66,3 +79,5 @@ export default function TaskDisplay({ startingTodos, username, title}) {
     </div>
   );
 }
+
+// {usernameRef} <br /> To Do List <br /> {titleRef}
